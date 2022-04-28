@@ -77,7 +77,16 @@ namespace WeatherAppUWP
                     CenterY = 0.5
                 };
                 WindBlockArrow.RenderTransform = rotateTransform2;
-                WindspeedTextBlock.Text = Convert.ToString(Weather.wind.speed) + " м/c";
+                WindspeedTextBlock.Text = Convert.ToString(Math.Round(Weather.wind.speed)) + " м/c";
+                VisibityTextBlock.Text = Convert.ToString(Convert.ToDouble(WeatherMisc.current.visibility) / 1000);
+                UVTextBlock.Text = WeatherMisc.current.uvi.ToString();
+                if (WeatherMisc.current.uvi <= 3)
+                {
+                    UVCommentTextBlock.Text = "Низкий";
+                } else if (WeatherMisc.current.uvi >= 3)
+                {
+                    UVCommentTextBlock.Text = "Средний";
+                } else { UVCommentTextBlock.Text = "Опасный!"; }
 
                 //Forecast
                 ForecastMinTemp_0.Text = Convert.ToString(Math.Round(temps_forecast_min[0])) + "°C";
@@ -98,7 +107,7 @@ namespace WeatherAppUWP
 
                 ForecastDow_3.Text = dates[3];
                 ForecastMinTemp_3.Text = Convert.ToString(Math.Round(temps_forecast_min[3])) + "°C";
-                ForecastMaxTemp_4.Text = Convert.ToString(Math.Round(temps_forecast_max[3])) + "°C";
+                ForecastMaxTemp_3.Text = Convert.ToString(Math.Round(temps_forecast_max[3])) + "°C";
                 BitmapImage Img3 = new BitmapImage(new Uri($"ms-appx:///Assets//{icons[3]}.png"));
                 ForecastIco_3.Source = Img3;
 

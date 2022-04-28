@@ -65,7 +65,6 @@
 
             </Grid>
 
-
             <StackPanel Orientation="Horizontal" Grid.Row="3" x:Name="ForecastGrid" Background="#B20699EE" CornerRadius="30" BorderBrush="Black" BorderThickness="2" Margin="10,101,10,10" HorizontalAlignment="Center">
                 <Grid Padding="0,0,0,0" Margin="20,0,20,0">
                     <Grid.RowDefinitions>
@@ -129,19 +128,20 @@
                 <Button x:Name="ReloadButton" Click="Page_Loaded" Height="40" Width="40" CornerRadius="15" Margin="3,3,3,3">
                     <Image Source="/Assets/reload.png"></Image>
                 </Button>
-                <TextBlock Visibility="Visible" Grid.Row="0" x:Name="DebugLon" HorizontalAlignment="Right">111</TextBlock>
+                <TextBlock Visibility="Collapsed" Grid.Row="0" x:Name="DebugLon" HorizontalAlignment="Right">111</TextBlock>
             </Grid>
 
             <Grid Grid.Row="5" Margin="0, 50, 0, 0">
+                
                 <StackPanel>
                     <StackPanel Margin="0,50,0,50" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Grid Background="#B20699EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Left" Margin="30,0,40,0" BorderBrush="Black" BorderThickness="2">
                             <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="15,0,0,0" TextWrapping="WrapWholeWords" >Ощущается как:</TextBlock>
-                            <TextBlock x:Name="FeelsLikeTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="FeelsLikeTextBlock" FontSize="40" TextWrapping="Wrap" Margin="0,0,0,10" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                         <Grid Background="#B20699EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Right" Margin="40,0,30,0" BorderBrush="Black" BorderThickness="2">
                             <TextBlock FontSize="20" HorizontalAlignment="Center">Влажность:</TextBlock>
-                            <TextBlock x:Name="HumidityTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center"  HorizontalAlignment="Center"  VerticalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="HumidityTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,10" HorizontalAlignment="Center"  VerticalAlignment="Center"></TextBlock>
                             <TextBlock x:Name="DewPointTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18" Margin="0,0,0,5"></TextBlock>
                         </Grid>
                     </StackPanel>
@@ -157,9 +157,21 @@
                                 <TextBlock x:Name="WindspeedTextBlock" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="18" Margin="0,0,0,5"></TextBlock>
                         </Grid>
                         <Grid Background="#B20B99EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Right" Margin="40,0,50,0" BorderBrush="Black" BorderThickness="2">
-                            <TextBlock FontSize="20" HorizontalAlignment="Center">Давление: </TextBlock>
-                            <TextBlock x:Name="PressureTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center"  VerticalAlignment="Center"></TextBlock>
+                            <TextBlock FontSize="20" HorizontalAlignment="Center">Давление:</TextBlock>
+                            <TextBlock x:Name="PressureTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,10"  VerticalAlignment="Center"></TextBlock>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="18" Margin="0,0,0,5">мм. рт. ст.</TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Margin="0,30,0,50" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Grid Background="#B20699EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Left" Margin="30,0,40,0" BorderBrush="Black" BorderThickness="2">
+                            <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="15,0,0,0">УФ-индекс</TextBlock>
+                            <TextBlock x:Name="UVTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="UVCommentTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Margin="0,0,0,5"></TextBlock>
+                        </Grid>
+                        <Grid Background="#B20699EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Right" Margin="40,0,30,0" BorderBrush="Black" BorderThickness="2">
+                            <TextBlock FontSize="20" HorizontalAlignment="Center">Видимость:</TextBlock>
+                            <TextBlock x:Name="VisibityTextBlock" FontSize="40" TextAlignment="Center"  HorizontalAlignment="Center"  VerticalAlignment="Center"></TextBlock>
+                            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18" FontWeight="Bold" Margin="0,0,0,25">км.</TextBlock>
                         </Grid>
                     </StackPanel>
                 </StackPanel>
