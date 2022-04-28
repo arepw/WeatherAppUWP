@@ -9,7 +9,7 @@
      Loaded="Page_Loaded">
     <Page.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="DeepSkyBlue" Offset="0"/>
+            <GradientStop Color="#FF00A3DA" Offset="0"/>
             <GradientStop Color="LightBlue" Offset="1"/>
         </LinearGradientBrush>
     </Page.Background>
@@ -43,7 +43,7 @@
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,40,0,0">
                     <Image x:Name="WeatherIcon" MaxHeight="105" MinWidth="120" Stretch="Uniform" Source="/Assets/reload.png"  />
-                    <TextBlock x:Name="TemperatureTextBlock" FontSize="48" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Segoe UI">Обновление...</TextBlock>
+                    <TextBlock x:Name="TemperatureTextBlock" FontSize="48" Margin="10,0,0,0" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Segoe UI">Обновление...</TextBlock>
 
                 </StackPanel>
 
@@ -65,7 +65,7 @@
 
             </Grid>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="3" x:Name="ForecastGrid" Background="#B20699EE" CornerRadius="30" BorderBrush="Black" BorderThickness="2" Margin="10,101,10,10" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Grid.Row="3" x:Name="ForecastGrid" Background="#B20699EE" CornerRadius="30" BorderBrush="Black" BorderThickness="2" Margin="10,100,10,10" HorizontalAlignment="Center">
                 <Grid Padding="0,0,0,0" Margin="20,0,20,0">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -141,7 +141,7 @@
                         </Grid>
                         <Grid Background="#B20699EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Right" Margin="40,0,30,0" BorderBrush="Black" BorderThickness="2">
                             <TextBlock FontSize="20" HorizontalAlignment="Center">Влажность:</TextBlock>
-                            <TextBlock x:Name="HumidityTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,10" HorizontalAlignment="Center"  VerticalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="HumidityTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,10" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                             <TextBlock x:Name="DewPointTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18" Margin="0,0,0,5"></TextBlock>
                         </Grid>
                     </StackPanel>
@@ -164,21 +164,20 @@
                     </StackPanel>
                     <StackPanel Margin="0,30,0,50" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Grid Background="#B20699EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Left" Margin="30,0,40,0" BorderBrush="Black" BorderThickness="2">
-                            <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="15,0,0,0">УФ-индекс</TextBlock>
-                            <TextBlock x:Name="UVTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                            <TextBlock x:Name="UVCommentTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Margin="0,0,0,5"></TextBlock>
+                            <TextBlock FontSize="20" HorizontalAlignment="Center">УФ-индекс:</TextBlock>
+                            <TextBlock x:Name="UVTextBlock" FontSize="40" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,10"></TextBlock>
+                            <TextBlock x:Name="UVCommentTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Margin="0,0,0,25"></TextBlock>
                         </Grid>
                         <Grid Background="#B20699EE" Width="180" Height="180" CornerRadius="30" HorizontalAlignment="Right" Margin="40,0,30,0" BorderBrush="Black" BorderThickness="2">
                             <TextBlock FontSize="20" HorizontalAlignment="Center">Видимость:</TextBlock>
-                            <TextBlock x:Name="VisibityTextBlock" FontSize="40" TextAlignment="Center"  HorizontalAlignment="Center"  VerticalAlignment="Center"></TextBlock>
-                            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18" FontWeight="Bold" Margin="0,0,0,25">км.</TextBlock>
+                            <TextBlock x:Name="VisibityTextBlock" FontSize="40" TextAlignment="Center"  HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0,0,0,10"></TextBlock>
                         </Grid>
                     </StackPanel>
                 </StackPanel>
 
             </Grid>
-            <TextBlock Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="Consolas">Проект студентов С-ИП-21-2</TextBlock>
-            <TextBlock Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontFamily="Consolas">Accuweather API</TextBlock>
+            <TextBlock Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="Consolas" Margin="0,0,2,0">Проект студентов С-ИП-21-2</TextBlock>
+            <TextBlock Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontFamily="Consolas" Margin="2,0,0,0">Accuweather API и Openweather API</TextBlock>
         </Grid>
     </ScrollViewer>
 </Page>

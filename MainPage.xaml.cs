@@ -78,7 +78,7 @@ namespace WeatherAppUWP
                 };
                 WindBlockArrow.RenderTransform = rotateTransform2;
                 WindspeedTextBlock.Text = Convert.ToString(Math.Round(Weather.wind.speed)) + " м/c";
-                VisibityTextBlock.Text = Convert.ToString(Convert.ToDouble(WeatherMisc.current.visibility) / 1000);
+                VisibityTextBlock.Text = Convert.ToString(Convert.ToDouble(WeatherMisc.current.visibility) / 1000) + " км.";
                 UVTextBlock.Text = WeatherMisc.current.uvi.ToString();
                 if (WeatherMisc.current.uvi <= 3)
                 {
