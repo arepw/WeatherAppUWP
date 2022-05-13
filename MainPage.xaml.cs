@@ -16,6 +16,7 @@ using Windows.Services.Maps;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.ViewManagement;
+using System.Globalization;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -26,6 +27,8 @@ namespace WeatherAppUWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public const string ApiKey = "fae6086566bfc2ee3f3361ed5f17fe7c";
+        public double latitude, longitude;
         public MainPage()
         {
             this.InitializeComponent();
@@ -34,94 +37,140 @@ namespace WeatherAppUWP
 
 
         }
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void PageLoadedMethod(double latitude, double longitude)
         {
-            string ApiKey = "853JUGFNxQ2YKTUN0f39EKGiBe8ZdAT9";
-            string[] forecast = new string[5];
-            float[] temps_forecast_min = new float[5];
-            float[] temps_forecast_max = new float[5];
-            int[] icons = new int[5];
-            string[] dates = new string[5];
-            string city = string.Empty;
             try
             {
-                var position = await UserLocation.GetPosition();
-                var latitude = position.Coordinate.Point.Position.Latitude;
-                var longitude = position.Coordinate.Point.Position.Longitude;
-                CurrentRoot Weather = await CurrentApi.GetCurrentWeather(latitude, longitude);
-                Rootobject WeatherMisc = await OnecallApi.GetCurrentWeather1C(latitude, longitude);
-                LocRoot Loc = await LocationApi.ReverseGeocoding(latitude, longitude, ApiKey);
-                (forecast, temps_forecast_min, temps_forecast_max, icons, dates) = await WeekApi.GetWeekForecast(Loc.Key, ApiKey);
-                //DebugLon.Text = forecast[0];
+                RootobjectOneCall Weather = await OnecallApi.GetCurrentWeather1C(latitude, longitude);
                 //DebugLat.Text = Loc.Key.ToString();
-                DebugLon.Text = Convert.ToString(Weather.wind.deg);
-                LocationTextBlock.Text = Loc.LocalizedName;
-                TemperatureTextBlock.Text = ((int)Weather.main.temp).ToString() + "°C";
+                //DebugLon.Text = Convert.ToString(Weather.wind.deg);
+                LocationTextBlock.Text = await ReverseGeocodingApi.GetLocationName(latitude, longitude);
+                TemperatureTextBlock.Text = ((int)Weather.current.temp).ToString() + "°C";
                 //ConditionsTextBlock.Text = Weather.weather[0].description;
-                ConditionsTextBlock.Text = forecast[0];
-                MinTempTextBlock.Text = "Мин.: " + Convert.ToString(Math.Round(temps_forecast_min[0])) + "°C";
-                MaxTempTextBlock.Text = "Макс.: " + Convert.ToString(Math.Round(temps_forecast_max[0])) + "°C";
-                BitmapImage Img0 = new BitmapImage(new Uri($"ms-appx:///Assets//{icons[0]}.png"));
+                ConditionsTextBlock.Text = Weather.current.weather[0].description;
+                MinTempTextBlock.Text = "мин.: " + Convert.ToString(Math.Round(Weather.daily[0].temp.min)) + "°C";
+                MaxTempTextBlock.Text = "макс.: " + Convert.ToString(Math.Round(Weather.daily[0].temp.max)) + "°C";
+                //BitmapImage Img0 = new BitmapImage(new Uri($"ms-appx:///Assets//{icons[0]}.png"));
+                BitmapImage Img0 = new BitmapImage(new Uri($"http://openweathermap.org/img/wn/{Weather.current.weather[0].icon}@2x.png"));
                 WeatherIcon.Source = Img0;
 
                 //Blocks
-                FeelsLikeTextBlock.Text = ((int)Weather.main.feels_like).ToString() + "°C";
-                HumidityTextBlock.Text = Weather.main.humidity.ToString() + "%";
-                DewPointTextBlock.Text = "Точка росы сейчас: " + Math.Round(WeatherMisc.current.dew_point).ToString() + "°C";
-                PressureTextBlock.Text = Convert.ToString(Math.Round(Weather.main.pressure / 1.333));
-                RotateTransform rotateTransform2 = 
+                FeelsLikeTextBlock.Text = ((int)Weather.current.feels_like).ToString() + "°C";
+                HumidityTextBlock.Text = Weather.current.humidity.ToString() + "%";
+                DewPointTextBlock.Text = "Точка росы сейчас: " + Math.Round(Weather.current.dew_point).ToString() + "°C";
+                PressureTextBlock.Text = Convert.ToString(Math.Round(Weather.current.pressure / 1.333));
+                RotateTransform rotateTransform2 =
                     new RotateTransform()
-                {
-                        Angle = Weather.wind.deg + 180,
-                    CenterX = 0.5,
-                    CenterY = 0.5
-                };
+                    {
+                        Angle = Weather.current.wind_deg + 180,
+                        CenterX = 0.5,
+                        CenterY = 0.5
+                    };
                 WindBlockArrow.RenderTransform = rotateTransform2;
-                WindspeedTextBlock.Text = Convert.ToString(Math.Round(Weather.wind.speed)) + " м/c";
-                VisibityTextBlock.Text = Convert.ToString(Convert.ToDouble(WeatherMisc.current.visibility) / 1000) + " км.";
-                UVTextBlock.Text = WeatherMisc.current.uvi.ToString();
-                if (WeatherMisc.current.uvi <= 3)
+                WindspeedTextBlock.Text = Convert.ToString(Math.Round(Weather.current.wind_speed)) + " м/c";
+                VisibityTextBlock.Text = Convert.ToString(Convert.ToDouble(Weather.current.visibility) / 1000) + " км.";
+                UVTextBlock.Text = Math.Round(Weather.current.uvi).ToString();
+                if (Math.Round(Weather.current.uvi) < 3)
                 {
                     UVCommentTextBlock.Text = "Низкий";
-                } else if (WeatherMisc.current.uvi >= 3)
+                }
+                else if (Math.Round(Weather.current.uvi) >= 3)
                 {
                     UVCommentTextBlock.Text = "Средний";
-                } else { UVCommentTextBlock.Text = "Опасный!"; }
+                }
+                else if (Math.Round(Weather.current.uvi) > 5)
+                {
+                    UVCommentTextBlock.Text = "Высокий";
+                }
+                else if (Math.Round(Weather.current.uvi) > 7)
+                {
+                    UVCommentTextBlock.Text = "Опасный!";
+                }
 
                 //Forecast
-                ForecastMinTemp_0.Text = Convert.ToString(Math.Round(temps_forecast_min[0])) + "°C";
-                ForecastMaxTemp_0.Text = Convert.ToString(Math.Round(temps_forecast_max[0])) + "°C";
+                ForecastMinTemp_0.Text = Convert.ToString(Math.Round(Weather.daily[0].temp.min)) + "°C";
+                ForecastMaxTemp_0.Text = Convert.ToString(Math.Round(Weather.daily[0].temp.max)) + "°C";
                 ForecastIco_0.Source = Img0;
 
-                ForecastDow_1.Text = dates[1];
-                ForecastMinTemp_1.Text = Convert.ToString(Math.Round(temps_forecast_min[1])) + "°C";
-                ForecastMaxTemp_1.Text = Convert.ToString(Math.Round(temps_forecast_max[1])) + "°C";
-                BitmapImage Img1 = new BitmapImage(new Uri($"ms-appx:///Assets//{icons[1]}.png"));
+                ForecastDow_1.Text = DateTimeFormatInfo.CurrentInfo.GetDayName(UnixtoDate(Weather.daily[1].dt).DayOfWeek);
+                ForecastMinTemp_1.Text = Convert.ToString(Math.Round(Weather.daily[1].temp.min)) + "°C";
+                ForecastMaxTemp_1.Text = Convert.ToString(Math.Round(Weather.daily[1].temp.max)) + "°C";
+                BitmapImage Img1 = new BitmapImage(new Uri($"http://openweathermap.org/img/wn/{Weather.daily[1].weather[0].icon}@2x.png"));
                 ForecastIco_1.Source = Img1;
 
-                ForecastDow_2.Text = dates[2];
-                ForecastMinTemp_2.Text = Convert.ToString(Math.Round(temps_forecast_min[2])) + "°C";
-                ForecastMaxTemp_2.Text = Convert.ToString(Math.Round(temps_forecast_max[2])) + "°C";
-                BitmapImage Img2 = new BitmapImage(new Uri($"ms-appx:///Assets//{icons[2]}.png"));
+                ForecastDow_2.Text = DateTimeFormatInfo.CurrentInfo.GetDayName(UnixtoDate(Weather.daily[2].dt).DayOfWeek);
+                ForecastMinTemp_2.Text = Convert.ToString(Math.Round(Weather.daily[2].temp.min)) + "°C";
+                ForecastMaxTemp_2.Text = Convert.ToString(Math.Round(Weather.daily[2].temp.max)) + "°C";
+                BitmapImage Img2 = new BitmapImage(new Uri($"http://openweathermap.org/img/wn/{Weather.daily[2].weather[0].icon}@2x.png"));
                 ForecastIco_2.Source = Img2;
 
-                ForecastDow_3.Text = dates[3];
-                ForecastMinTemp_3.Text = Convert.ToString(Math.Round(temps_forecast_min[3])) + "°C";
-                ForecastMaxTemp_3.Text = Convert.ToString(Math.Round(temps_forecast_max[3])) + "°C";
-                BitmapImage Img3 = new BitmapImage(new Uri($"ms-appx:///Assets//{icons[3]}.png"));
+                ForecastDow_3.Text = DateTimeFormatInfo.CurrentInfo.GetDayName(UnixtoDate(Weather.daily[3].dt).DayOfWeek);
+                ForecastMinTemp_3.Text = Convert.ToString(Math.Round(Weather.daily[3].temp.min)) + "°C";
+                ForecastMaxTemp_3.Text = Convert.ToString(Math.Round(Weather.daily[3].temp.max)) + "°C";
+                BitmapImage Img3 = new BitmapImage(new Uri($"http://openweathermap.org/img/wn/{Weather.daily[3].weather[0].icon}@2x.png"));
                 ForecastIco_3.Source = Img3;
 
-                ForecastDow_4.Text = dates[4];
-                ForecastMinTemp_4.Text = Convert.ToString(Math.Round(temps_forecast_min[4])) + "°C";
-                ForecastMaxTemp_4.Text = Convert.ToString(Math.Round(temps_forecast_max[4])) + "°C";
-                BitmapImage Img4 = new BitmapImage(new Uri($"ms-appx:///Assets//{icons[4]}.png"));
+                ForecastDow_4.Text = DateTimeFormatInfo.CurrentInfo.GetDayName(UnixtoDate(Weather.daily[4].dt).DayOfWeek);
+                ForecastMinTemp_4.Text = Convert.ToString(Math.Round(Weather.daily[4].temp.min)) + "°C";
+                ForecastMaxTemp_4.Text = Convert.ToString(Math.Round(Weather.daily[4].temp.max)) + "°C";
+                BitmapImage Img4 = new BitmapImage(new Uri($"http://openweathermap.org/img/wn/{Weather.daily[4].weather[0].icon}@2x.png"));
                 ForecastIco_4.Source = Img4;
             }
-
+            catch (NotSupportedException)
+            {
+                ConditionsTextBlock.Text = "Включите геолокацию или введите город в строке поиска";
+            }
             catch
             {
-                ConditionsTextBlock.Text = "Произошла ошибка :(";
+                ConditionsTextBlock.Text = "Проверьте интернет подключение!";
             }
         }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var position = await UserLocation.GetPosition();
+                latitude = position.Coordinate.Point.Position.Latitude;
+                longitude = position.Coordinate.Point.Position.Longitude;
+            }
+            catch (NotSupportedException)
+            {
+                ConditionsTextBlock.Text = "Включите геолокацию или введите город в строке поиска";
+            }
+            PageLoadedMethod(latitude, longitude);
+        }
+
+        private static DateTime UnixtoDate(int unixtime)
+        {
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixtime).ToLocalTime();
+            return dtDateTime;
+        }
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                (latitude, longitude) = await DirectGeoApi.SearchLocation(SearchField.Text);
+            }
+            catch
+            {
+                ConditionsTextBlock.Text = "Проверьте интернет подключение!";
+            }
+            PageLoadedMethod(latitude, longitude);
+        }
+
+        //private void MainScrollView_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        //{
+        //    if (!LocationTextBlock.IsHitTestVisible)
+        //    {
+        //        ConditionsTextBlock.Text = "bebra";
+        //    }
+        //    else
+        //    {
+        //        ConditionsTextBlock.Text = "huebra";
+        //    }
+        //}
     }
 }

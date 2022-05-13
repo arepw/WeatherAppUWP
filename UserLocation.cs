@@ -13,7 +13,7 @@ namespace WeatherAppUWP
         {
             var accessStatus = await Geolocator.RequestAccessAsync();
 
-            if (accessStatus != GeolocationAccessStatus.Allowed) throw new Exception();
+            if (accessStatus != GeolocationAccessStatus.Allowed) throw new NotSupportedException();
 
             var geolocator = new Geolocator { DesiredAccuracyInMeters = 0 };
 
