@@ -20,7 +20,7 @@
                 <Image Source="/Assets/reload.png"></Image>
             </Button>
             <TextBlock Visibility="Collapsed" Grid.Row="0" x:Name="DebugLon" HorizontalAlignment="Right">111</TextBlock>
-            <TextBox x:Name="SearchField" HorizontalAlignment="Right" Width="200" Margin="3,6,43,6" PlaceholderText="Поиск..." TextAlignment="Left" FontSize="20"></TextBox>
+            <TextBox x:Name="SearchField" KeyDown="SearchField_KeyDown" HorizontalAlignment="Right" Width="200" Margin="3,6,43,6" PlaceholderText="Поиск..." TextAlignment="Left" FontSize="20"></TextBox>
             <Button x:Name="SearchButton" Click="SearchButton_Click" Height="39" Width="40"  HorizontalAlignment="Right" Margin="3,3,3,3">
                 <Image Source="/Assets/searchico.png"></Image>
             </Button>

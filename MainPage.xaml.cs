@@ -148,6 +148,22 @@ namespace WeatherAppUWP
             return dtDateTime;
         }
 
+        private async void SearchField_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                try
+                {
+                    (latitude, longitude) = await DirectGeoApi.SearchLocation(SearchField.Text);
+                }
+                catch
+                {
+                    ConditionsTextBlock.Text = "Проверьте интернет подключение!";
+                }
+                PageLoadedMethod(latitude, longitude);
+            }
+        }
+
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -169,7 +185,7 @@ namespace WeatherAppUWP
         //    }
         //    else
         //    {
-        //        ConditionsTextBlock.Text = "huebra";
+        //        ConditionsTextBlock.Text = "no bebra";
         //    }
         //}
     }
